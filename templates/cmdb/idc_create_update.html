@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% load bootstrap3 %}
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRightBig">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="ibox float-e-margins">
+                <div id="ibox-content" class="ibox-title">
+                    <h5>{{ action }}</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-wrench"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="ibox-content">
+                    <div class="panel blank-panel">
+                        <div class="tab-content">
+                            <div id="tab-1" class="ibox float-e-margins tab-pane active"></div>
+                            <form id="IDCForm" method="post" class="form-horizontal">
+                                {% csrf_token %}
+                                <h3 class="widget-head-color-box">基本信息</h3>
+                                {% bootstrap_field form.name layout="horizontal" %}
+                                {% bootstrap_field form.address layout="horizontal" %}
+                                {% bootstrap_field form.tel layout="horizontal" %}
+                                {% bootstrap_field form.contact layout="horizontal" %}
+                                {% bootstrap_field form.contact_phone layout="horizontal" %}
+
+                                <div class="hr-line-dashed"></div>
+                                <h3 class="widget-head-color-box">其他信息</h3>
+                                {% bootstrap_field form.operator layout="horizontal" %}
+                                {% bootstrap_field form.intranet layout="horizontal" %}
+                                {% bootstrap_field form.extranet layout="horizontal" %}
+                                {% bootstrap_field form.bandwidth layout="horizontal" %}
+                                {% bootstrap_field form.comment layout="horizontal" %}
+
+                                <div class="hr-line-dashed"></div>
+                                <div class="form-group">
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button class="btn btn-default" type="reset">重置</button>
+                                        <button id="submit_button" class="btn btn-primary" type="submit">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{#{% block custom_foot_js %}#}
+{#    <script>#}
+{#        $(document).ready(function () {#}
+{#            $(".select2").select2();#}
+{#        })#}
+{#    </script>#}
+{#{% endblock %}#}

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="shortcut icon" href="{% static 'img/facio.ico' %}" type="image/x-icon">
+    {% include '_header_css_js.html' %}
+    <link href="{% static 'css/angularpy.css' %}" rel="stylesheet">
+    <script href="{% static 'js/angularpy.js' %}"></script>
+</head>
+<body class="main">
+    <div class="block">
+        <div class="messages">
+            {% if errors %}
+                <p>{{ errors }}</p>
+            {% endif %}
+
+            <h1>{{ title }}</h1>
+
+            {% if messages %}
+                {{ messages|safe }}
+            {% endif %}
+
+            <div class="row">
+                <a href="{{ redirect_url }}">返回</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

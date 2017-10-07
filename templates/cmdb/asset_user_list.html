@@ -1,0 +1,70 @@
+{% extends '_base_list.html' %}
+{% load static %}
+{% block content_left_head %}{% endblock %}
+{% block table_container %}
+<div class="uc pull-left m-l-5 m-r-5">
+    <a href="{% url 'cmdb:asset-user-create' %}" class="btn btn-sm btn-primary">创建终端用户</a>
+</div>
+
+<table class="table table-striped table-bordered table-hover" id="asset_user_list_table">
+    <thead>
+    <tr>
+        <th class="text-center">
+            <input type="checkbox" id="check_all" class="ipt_check_all">
+        </th>
+        <th class="text-center">用户名</th>
+        <th class="text-center">关联资产数</th>
+        <th class="text-center">关联资产</th>
+        <th class="text-center">备注</th>
+        <th class="text-center">动作</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+{% endblock %}
+
+{% block custom_foot_js %}
+<script>
+$(document).ready(function () {
+    var options = {
+         ele: $("#asset_user_list_table"),
+        columnDefs: [
+{#            为终端用户名创建链接，链接至用户信息#}
+            {targets: 1, createdCell: function (td, cellData, rowData) {
+{#                var detail_btn = "<a href={% url 'cmdb:asset-user-detail' pk=999999 %}>"+ cellData + "</a>";#}
+                var detail_btn = "<a href='#'>" + cellData + "</a>";
+                $(td).html(detail_btn.replace("999999", rowData.id));
+            }},
+            {targets: 4, createdCell: function (td, cellData) {
+                var innerHtml = cellData.length > 8 ? cellData.substring(0, 24) + "..." : cellData;
+                $(td).html("<a href='javascript:void(0);' data-toggle='tooltip' title='"+cellData+"'>" + innerHtml + "</a>");
+            }},
+            {targets: 5, createdCell: function (td, cellData, rowData) {
+{#                var update_btn = "<a href='{% url 'cmdb:asset-usr-update' pk=999999 %}' class='btn btn-xs x-l-xs btn-info'>更新</a>".replace("999999", cellData);#}
+                var update_btn = "<a href='#' class='btn btn-xs x-l-xs btn-info'>更新</a>";
+                var delete_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_asset_user_delete' data-uid='999999'>删除</a>".replace("999999", cellData);
+                $(td).html(update_btn + delete_btn);
+            }}
+        ],
+        ajax_url: "{% url 'api-cmdb:asset-user-list' %}",
+{#        ajax_url: "#",#}
+        columns: [{data: "id"}, {data: "username"}, {data: "assets_amount"}, {data: "assets_list"},
+            {data: "comment"}, {data: "id"}]
+    };
+    angularpy.initDataTable(options);
+})
+
+.on("click", ".btn_asset_user_delete", function () {
+    var $this = $(this);
+    var $data_table = $("#asset_user_list_table").DataTable();
+    var name = $(this).closest("tr").find(":nth-child(2)").children("a").html();
+    var uid = $this.data("uid");
+{#    var the_url = "{% url 'api-cmdb:asset-user-detail' pk=999999 %}".replace("999999", uid);#}
+    var the_url = "#".replace("999999", uid);
+    objectDelete($this, name, the_url);
+    setTimeout(function () {
+        $data_table.ajax.reload();
+    }, 3000)
+})
+</script>
+{% endblock %}

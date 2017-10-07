@@ -1,0 +1,30 @@
+{% load static %}
+<li class="nav-header">
+    <div class="dropdown profile-element">
+        <span>
+            <img alt="image" class="img-circle" width="48" height="48" src="{% static 'img/user.png' %}"/>
+        </span>
+
+        <a data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle" href="#">
+            <span class="clear">
+                <span class="m-t-xs">
+                    <strong class="font-bold">{{ user.username }}<span style="color: #8095a8"></span> </strong><br/>
+                </span>
+                <span class="text-muted text-xs">
+                    {{ user.get_role_display | default:"User" }}<b class="caret"></b>
+                </span>
+            </span>
+        </a>
+        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+{#                <li><a href="{% url 'users:user-profile' %}">个人信息</a> </li>#}
+{#                <li><a href="{% url 'users:user-profile_update' %}">个人信息更新</a> </li>#}
+            <li><a href="#">个人信息</a> </li>
+            <li><a href="#">个人信息更新</a> </li>
+            <li class="divider"></li>
+            <li><a href="{% url 'users:logout' %}">注销登录</a> </li>
+        </ul>
+    </div>
+    <div class="logo-element">
+        APY
+    </div>
+</li>

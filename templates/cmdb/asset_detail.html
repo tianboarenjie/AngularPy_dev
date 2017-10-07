@@ -1,0 +1,288 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load common_tags %}
+
+{% block custom_header_css_js %}
+    <link rel="stylesheet" href="{% static 'css/plugins/sweetalert2/sweetalert2.css' %}">
+    <script src="{% static 'js/plugins/sweetalert2/sweetalert2.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="panel-options">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#" class="text-center"><i class="fa fa-laptop"></i>资产详情 </a>
+                        </li>
+
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-default" id="btn-update-asset"><i class="fa fa-edit"></i>更新 </a>
+                        </li>
+
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-danger" id="btn-delete-asset"><i class="fa fa-edit"></i>删除 </a>
+                        </li>
+
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-success" id="btn-refresh-asset"><i class="fa fa-laptop"></i>刷新资产状态 </a>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div class="col-sm-4" style="padding-left: 0">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label"><b>{{ asset.hostname }}</b></span>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user"></ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ibox-content">
+                                <table class="table">
+                                    <tbody>
+                                    <tr class="no-borders-tr">
+                                        <td width="35%">主机名：</td>
+                                        <td><b>{{ asset.hostname }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>网关：</td>
+                                        <td><b>{{ asset.gateway|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>外网IP：</td>
+                                        <td><b>{{ asset.ip }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>端口：</td>
+                                        <td><b>{{ asset.port }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>IDC机房：</td>
+                                        <td><b>{{ asset.idc }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>机柜编号：</td>
+                                        <td><b>{{ asset.cabinet_no }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>机柜层号：</td>
+                                        <td><b>{{ asset.cabinet_pos }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>制造商：</td>
+                                        <td><b>{{ asset.product_name|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>产品序列号：</td>
+                                        <td><b>{{ asset.product_serial|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>产品UUID：</td>
+                                        <td><b>{{ asset.product_uuid|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>CPU：</td>
+                                        <td><b>{{ asset.processor_count }}*{{ asset.processor_core }} {{ asset.processor_type|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>OS：</td>
+                                        <td><b>{{ asset.os|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>操作系统：</td>
+                                        <td><b>{{ asset.distribution|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>kernel：</td>
+                                        <td><b>{{ asset.kernel|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>内存：</td>
+                                        <td><b>{{ asset.mem_total|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>可用内存：</td>
+                                        <td><b>{{ asset.mem_free|json_loads }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>资产状态：</td>
+                                        <td><b>{{ asset.status }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>激活：</td>
+                                        <td><b>{{ asset.is_active }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>资产类型：</td>
+                                        <td><b>{{ asset.type }}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>备注：</td>
+                                        <td><b>{{ asset.comment }}</b></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-sm-8" style="padding-left: 0;padding-right: 0">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i>网络信息
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">label</th>
+                                        <th class="text-center">模块</th>
+                                        <th class="text-center">ipv4地址</th>
+                                        <th class="text-center">ipv4掩码</th>
+                                        <th class="text-center">ipv6地址</th>
+                                        <th class="text-center">ipv6掩码</th>
+                                        <th class="text-center">MAC地址</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for nt1 in networks %}
+                                        {% for nt2 in nt1 %}
+                                            {% for key, value in nt2.items %}
+                                                <tr>
+                                                    <th class="text-center">{{ key }}</th>
+                                                    <th class="text-center">{{ value.module }}</th>
+                                                    <th class="text-center">{{ value.ipv4_addr }}</th>
+                                                    <th class="text-center">{{ value.ipv4_net }}</th>
+                                                    <th class="text-center">{{ value.ipv6_addr }}</th>
+                                                    <th class="text-center">{{ value.ipv6_pref }}</th>
+                                                    <th class="text-center">{{ value.macaddr }}</th>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i>硬盘信息
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">label</th>
+                                        <th class="text-center">类型</th>
+                                        <th class="text-center">容量</th>
+                                        <th class="text-center">主板</th>
+                                        <th class="text-center">厂商</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for dk1 in disks %}
+                                        {% for dk2 in dk1 %}
+                                            {% for key, value in dk2.items %}
+                                                <tr>
+                                                    <th class="text-center">{{ key }}</th>
+                                                    <th class="text-center">{{ value.model }}</th>
+                                                    <th class="text-center">{{ value.size }}</th>
+                                                    <th class="text-center">{{ value.host }}</th>
+                                                    <th class="text-center">{{ value.vendor }}</th>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="panel panel-success">
+                            <div class="panel-heading">
+                                <i class="fa fa-info-circle"></i>系统分区信息
+                            </div>
+                            <div class="panel-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">挂载点</th>
+                                        <th class="text-center">文件系统类型</th>
+                                        <th class="text-center">总容量</th>
+                                        <th class="text-center">可用容量</th>
+                                        <th class="text-center">设备名</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for mt1 in mounts %}
+                                        {% for mt2 in mt1 %}
+                                            {% for key, value in mt2.items %}
+                                                <tr>
+                                                    <th class="text-center">{{ key }}</th>
+                                                    <th class="text-center">{{ value.fstype }}</th>
+                                                    <th class="text-center">{{ value.size }}</th>
+                                                    <th class="text-center">{{ value.available }}</th>
+                                                    <th class="text-center">{{ value.device }}</th>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block custom_foot_js %}
+<script>
+function refreshAssetHardware() {
+    var the_url = "{% url 'api-cmdb:asset-refresh' pk=asset.id %}";
+    var success = function (data) {
+        swal({
+           title: "刷新成功",
+           text: "更新资产" + "{{ asset.hostname }}" + "成功",
+           type:"success"
+        }, function () {
+            location.reload()
+        });
+    };
+    APIUpdateAttr({
+        url: the_url,
+        success: success,
+        method: "GET"
+    })
+}
+
+$(document).ready(function () {
+
+}).on("click", "#btn-refresh-asset", function () {
+    refreshAssetHardware();
+})
+</script>
+{% endblock %}

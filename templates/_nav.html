@@ -1,0 +1,45 @@
+<li id="index">
+    <a href="{% url 'index' %}">
+        <i class="fa fa-dashboard"></i>
+        <span class="nav-label">面板</span><span class="label label-info pull-right"></span>
+    </a>
+</li>
+<li id="users">
+    <a>
+        <i class="fa fa-group"></i>
+        <span class="nav-label">用户</span><span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level active">
+        <li id="user"><a href="{% url 'users:system-user-list' %}">用户信息</a> </li>
+{#        <li id="user"><a href="{% url 'users:users-list' %}">用户信息</a> </li>#}
+{#        <li id="user-group"><a href="{% url 'users:user-group-list' %}">用户组信息</a> </li>#}
+    </ul>
+</li>
+<li id="cmdb">
+    <a>
+        <i class="fa fa-inbox"></i> <span class="nav-label">资产信息</span><span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+        <li id="asset"><a href="{% url 'cmdb:asset-list' %}">资产信息</a> </li>
+{#        <li id="asset"><a href="#">资产信息</a> </li>#}
+{#        <li id="add-asset"><a href="#">添加资产</a> </li>#}
+        <li id="idc"><a href="{% url 'cmdb:idc-list' %}">IDC机房</a> </li>
+        <li id="user"><a href="{% url 'cmdb:asset-user-list' %}">终端用户</a> </li>
+{#        <li id="asset"><a href="{% url 'cmdb:assets-list' %}">资产信息</a> </li>#}
+{#        <li id="add-asset"><a href="{% url 'cmdb:add-asset' %}">添加资产</a> </li>#}
+{#        <li id="server"><a href="{% url 'cmdb:server-list' %}">服务器信息</a> </li>#}
+    </ul>
+</li>
+
+
+<li id="ansible">
+    <a href="#">
+        <i class="fa fa-rocket"></i><span class="nav-label">Ansible</span><span class="fa arrow"></span>
+    </a>
+    <ul class="nav nav-second-level">
+        <li id="module"><a href="#">模块管理</a> </li>
+        <li id="playbook"><a href="#">剧本管理</a> </li>
+{#        <li id="module"><a href="{% url 'cmdb:ansible-module' %}">模块管理</a> </li>#}
+{#        <li id="playbook"><a href="{% url 'cmdb:ansible-playbook' %}">剧本管理</a> </li>#}
+    </ul>
+</li>

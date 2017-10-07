@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
+    <title>AngularPy</title>
+
+    <link rel="shortcut icon" href="{% static 'img/facio.ico' %}" type="image/x-icon">
+    {% include '_header_css_js.html' %}
+    <link href="{% static 'css/angularpy.css' %}" rel="stylesheet">
+    {% block custom_header_css_js %}{% endblock %}
+</head>
+<body>
+<div id="wrapper">
+    {% include '_left_side_bar.html' %}
+
+    <div id="page-wrapper" class="gray-bg">
+        {% include '_header_bar.html' %}
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
+</body>
+{% include '_foot_js.html' %}
+{% block custom_foot_js %}{% endblock %}
+</html>

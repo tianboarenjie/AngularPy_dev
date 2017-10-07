@@ -1,0 +1,65 @@
+{% extends '_base_list.html' %}
+{% block table_container %}
+<div class="uc pull-left m-l-5 m-r-5">
+    <a href="{% url 'cmdb:idc-create' %}" class="btn btn-sm btn-primary">创建IDC</a>
+</div>
+<table class="table table-striped table-bordered table-hover" id="idc_list_table">
+    <thead>
+    <tr>
+        <th class="text-center">
+            <input type="checkbox" id="check_all" class="ipt_check_all">
+        </th>
+        <th class="text-center"><a href="#?sort=name">名称</a> </th>
+        <th class="text-center">资产数量</th>
+        <th class="text-center">联系人</th>
+        <th class="text-center">联系电话</th>
+        <th class="text-center">维护商</th>
+        <th class="text-center">备注</th>
+        <th class="text-center">动作</th>
+    </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+{% block content_bottom_left %}{% endblock %}
+{% endblock %}
+
+{% block custom_foot_js %}
+<script>
+$(document).ready(function () {
+    var options = {
+        ele: $("#idc_list_table"),
+        columnDefs: [
+            {targets: 1, createdCell: function (td, cellData, rowData) {
+                var detail_btn = "<a href='#'>" + cellData + "</a>";
+                $(td).html(detail_btn.replace("999999", rowData.id));
+            }},
+            {targets: 6, createdCell: function (td, cellData) {
+                var innerHtml = cellData.length > 8 ? cellData.substring(0, 24) + "..." : cellData;
+                $(td).html("<a href='javascript:void(0);' data-toggle='tooltip' title='"+cellData+"'>" + innerHtml + "</a>");
+            }},
+            {targets: 7, createdCell: function (td, cellData, rowData) {
+                var update_btn = "<a href='#' class='btn btn-xs btn-info'>更新</a>".replace("999999", cellData);
+                var del_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_idc_delete' data-uid='999999'>删除</a>".replace("999999", cellData);
+                $(td).html(update_btn + del_btn)
+            }}
+        ],
+        ajax_url: "{% url 'api-cmdb:idc-list' %}",
+        columns: [{data: function () {return ""}}, {data: "name"}, {data: "assets_amount"}, {data: "contact"},
+            {data: "contact_phone"}, {data: "operator"}, {data: "comment"}, {data: "id"}]
+    };
+    angularpy.initDataTable(options);
+})
+
+.on("click", ".btn_idc_delete", function () {
+    var $this = $(this);
+    var $data_table = $("#idc_list_table").DataTable();
+    var name = $(this).closest("tr").find(":nth-child(2)").children("a").html();
+    var uid = $this.data("uid");
+    var the_url = "#".replace("999999", uid);
+    objectDelete($this, name, the_url);
+    setTimeout(function () {
+        $data_table.ajax.reload();
+    }, 3000);
+})
+</script>
+{% endblock %}
