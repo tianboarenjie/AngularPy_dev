@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block custom_header_css_js %}
+<link href="{% static "css/plugins/select2/select2.min.css" %}" rel="stylesheet">
+<script src="{% static "js/plugins/select2/select2.full.min.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="panel-options">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="{% url 'cmdb:asset-user-detail' pk=asset_user.id %}" class="text-center">
+                                <i class="fa fa-laptop"></i>终端用户详情
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cmdb:asset-user-asset' pk=asset_user.id %}" class="text-center">
+{#                            <a href="#" class="text-center">#}
+                                <i class="fa fa-bar-chart-o">终端用户资产</i>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-default" href="#"><i class="fa fa-edit"></i>更新 </a>
+                        </li>
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-danger btn-delete-asset-user">
+                                <i class="fa fa-edit">删除</i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content">
+                    <div class="col-sm-7" style="padding-left: 0;">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <span class="label"><b>{{ asset_user.username }}</b></span>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="ibox-content">
+                                <table class="table">
+                                    <tbody>
+                                        <tr class="no-borders-tr">
+                                            <td>用户名：</td>
+                                            <td><b>{{ asset_user.username }}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>创建者：</td>
+                                            <td><b>{{ asset_user.create_by }}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>创建日期：</td>
+                                            <td><b>{{ asset_user.date_created|date:"Y-n-j H:i:s"}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>备注</td>
+                                            <td><b>{{ asset_user.comment }}</b></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+

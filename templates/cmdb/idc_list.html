@@ -30,7 +30,7 @@ $(document).ready(function () {
         ele: $("#idc_list_table"),
         columnDefs: [
             {targets: 1, createdCell: function (td, cellData, rowData) {
-                var detail_btn = "<a href='#'>" + cellData + "</a>";
+                var detail_btn = "<a href='{% url 'cmdb:idc-detail' pk=999999 %}'>" + cellData + "</a>";
                 $(td).html(detail_btn.replace("999999", rowData.id));
             }},
             {targets: 6, createdCell: function (td, cellData) {

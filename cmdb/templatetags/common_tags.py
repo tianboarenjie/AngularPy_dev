@@ -85,4 +85,6 @@ def to_html(s):
 
 @register.filter
 def json_loads(s):
+    if s is None:
+        return "None"
     return json.loads(s)

@@ -76,10 +76,16 @@ class AssetDetailView(DeleteView):
         return super(AssetDetailView, self).get_context_data(**kwargs)
 
     def get_networks(self):
+        if self.object.networks is None:
+            return "None"
         return json.loads(self.object.networks)
 
     def get_disks(self):
+        if self.object.disks is None:
+            return "None"
         return json.loads(self.object.disks)
 
     def get_mounts(self):
+        if self.object.mounts is None:
+            return "None"
         return json.loads(self.object.mounts)

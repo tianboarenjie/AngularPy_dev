@@ -38,8 +38,8 @@ LOGIN_URL = reverse_lazy("users:login")
 # Application definition
 
 INSTALLED_APPS = [
-    'cmdb.apps.CmdbConfig',
-    "users.apps.UsersConfig",
+    'cmdb',
+    "users",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,11 +167,16 @@ REST_FRAMEWORK = {
 # django-celery
 import djcelery
 djcelery.setup_loader()
-BROKER_URL = "redis://%(host)s:%(port)s/6" % {
+BROKER_URL = "redis://%(password)s%(host)s:%(port)s/6" % {
+    "password": "",
     "host": "127.0.0.1",
     "port": 6379,
 }
 CELERY_RESULT_BACKEND = "djcelery.backends.database:DatabaseBackend"
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
 
 # Cache use redis
 CACHES = {

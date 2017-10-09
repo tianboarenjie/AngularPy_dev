@@ -13,6 +13,7 @@
 """
 import subprocess
 from threading import Thread
+import os
 
 
 def start_django():
@@ -24,7 +25,9 @@ def start_django():
 
 def start_celery():
     print("start celery")
-    subprocess.call("python3.5 manage.py celery worker -c 4 --loglevel=info", shell=True)
+    os.environ.setdefault("C_FORCE_ROOT", "1")
+    os.environ.setdefault("PYTHONOPTIMIZE", "1")
+    subprocess.call("python3.5 ./manage.py celery worker --loglevel=info", shell=True)
 
 
 def main():

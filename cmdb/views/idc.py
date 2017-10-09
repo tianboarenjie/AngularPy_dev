@@ -13,13 +13,13 @@
 """
 
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, View
+from django.views.generic import TemplateView, ListView, DetailView
 from django.views.generic.edit import CreateView
 
 from users.utils import AdminUserRequiredMixin
 
 from ..forms import IDCForm
-from ..models import IDC
+from ..models import IDC, ServerAsset
 
 
 class IDCListView(AdminUserRequiredMixin, TemplateView):
@@ -53,3 +53,34 @@ class IDCCreateView(AdminUserRequiredMixin, CreateView):
         idc.create_by = self.request.user.username or "System"
         idc.save()
         return super(IDCCreateView, self).form_valid(form)
+
+
+class IDCDetailView(AdminUserRequiredMixin, DetailView):
+    model = IDC
+    template_name = "cmdb/idc_detail.html"
+    context_object_name = "idc"
+
+    def get_context_data(self, **kwargs):
+        context = {
+            "app": u"资产管理",
+            "action": u"IDC详情"
+        }
+        kwargs.update(context)
+        return super(IDCDetailView, self).get_context_data(**kwargs)
+
+
+class IDCAssetView(AdminUserRequiredMixin, DetailView):
+    model = IDC
+    template_name = "cmdb/idc_asset.html"
+    context_object_name = "idc"
+
+    def get_context_data(self, **kwargs):
+        assets_remain = ServerAsset.objects.exclude(id__in=self.object.idc_assets.all())
+        context = {
+            "app": u"资产管理",
+            "action": u"IDC详情",
+            "assets_remain": assets_remain,
+            "count": len(self.object.idc_assets.all())
+        }
+        kwargs.update(context)
+        return super(IDCAssetView, self).get_context_data(**kwargs)

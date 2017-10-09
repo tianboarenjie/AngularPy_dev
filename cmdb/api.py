@@ -32,6 +32,12 @@ class IDCViewSet(IDInfilterMixin, BulkModelViewSet):
     permission_classes = (IsSuperUser,)
 
 
+class IDCUpdateAssetApi(generics.RetrieveUpdateAPIView):
+    queryset = IDC.objects.all()
+    serializer_class = serializers.IDCUpdateAssetSerializer
+    permission_classes = (IsSuperUser,)
+
+
 class AssetUserSet(IDInfilterMixin, BulkModelViewSet):
     queryset = AssetUser.objects.all()
     serializer_class = serializers.AssetUserSerializer
@@ -42,6 +48,16 @@ class ServerAssetSet(IDInfilterMixin, BulkModelViewSet):
     queryset = ServerAsset.objects.all()
     serializer_class = serializers.ServerAssetSerializer
     permission_classes = (IsSuperUser,)
+
+    def get_queryset(self):
+        queryset = super(ServerAssetSet, self).get_queryset()
+        idc_id = self.request.query_params.get("idc_id", "")
+        asset_user_id = self.request.query_params.get("asset_user_id", "")
+        if idc_id:
+            queryset = queryset.filter(idc__id=idc_id)
+        elif asset_user_id:
+            queryset = queryset.filter(certification__id=asset_user_id)
+        return queryset
 
 
 class ServerAssetRefreshView(generics.RetrieveAPIView):
@@ -59,7 +75,6 @@ class ServerAssetRefreshView(generics.RetrieveAPIView):
             "username": temp.certification.username,
             "password": temp.certification.password,
         }
-        print([asset])
         result = refresh_asset_hardware_info([asset])
         if len(result) == 0:
             return super(ServerAssetRefreshView, self).retrieve(result, *args, **kwargs)

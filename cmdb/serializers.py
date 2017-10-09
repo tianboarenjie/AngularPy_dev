@@ -73,6 +73,14 @@ class IDCSerializer(BulkSerializerMixin, serializers.ModelSerializer):
         return fields
 
 
+class IDCUpdateAssetSerializer(serializers.ModelSerializer):
+    idc_assets = serializers.PrimaryKeyRelatedField(many=True, queryset=ServerAsset.objects.all())
+
+    class Meta:
+        model = IDC
+        fields = ["id", "idc_assets"]
+
+
 class ServerAssetSerializer(BulkSerializerMixin, serializers.ModelSerializer):
     idc = serializers.CharField()
     certification = serializers.CharField()

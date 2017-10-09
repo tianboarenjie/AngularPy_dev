@@ -62,8 +62,6 @@ $(document).ready(function () {
 {#                $(td).html(detail_btn);#}
             }},
             {targets: 2, createdCell: function (td, cellData, rowData) {
-{#                               var detail_btn = '<a href="{% url "api-cmdb:idc-detail" pk=999999 %}">' + cellData + '</a>';#}
-{#                $(td).html(detail_btn.replace("999999", rowData.id));#}
                 var detail_btn = '<a href="#">' + cellData + '</a>';
                 $(td).html(detail_btn);
             }},

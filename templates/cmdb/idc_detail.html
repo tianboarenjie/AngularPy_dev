@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block custom_header_css_js %}
+<link href="{% static "css/plugins/select2/select2.min.css" %}" rel="stylesheet">
+<script src="{% static "js/plugins/select2/select2.full.min.js" %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="panel-options">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="{% url 'cmdb:idc-detail' pk=idc.id %}" class="text-center"><i class="fa fa-laptop"></i>IDC详情 </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'cmdb:idc-asset' pk=idc.id %}" class="text-center">
+                                <i class="fa fa-bar-chart-o">IDC资产</i>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-default" href="#"><i class="fa fa-edit"></i>更新 </a>
+                        </li>
+                        <li class="pull-right">
+                            <a class="btn btn-outline btn-danger btn-delete-idc">
+                                <i class="fa fa-edit"></i>删除
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="tab-content col-sm-9">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <span class="label"><b>{{ idc.name }}</b></span>
+                            <div class="ibox-tools">
+                                <a class="collapse-link">
+                                    <i class="fa fa-chevron-up"></i>
+                                </a>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="fa fa-wrench"></i>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user">
+                                </ul>
+                                <a class="close-link">
+                                    <i class="fa fa-times"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+                            <table class="table">
+                                <tbody>
+                                <tr class="no-borders-tr">
+                                    <td width="20%">名称:</td>
+                                    <td><b>{{ idc.name }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>地址:</td>
+                                    <td><b>{{ idc.address}}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>机房电话:</td>
+                                    <td><b>{{ idc.tel }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>机房联系人:</td>
+                                    <td><b>{{ idc.contact }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>联系人电话:</td>
+                                    <td><b>{{ idc.contact_phone }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>内网IP范围:</td>
+                                    <td><b>{{ idc.intranet }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>外网IP范围:</td>
+                                    <td><b>{{ idc.extranet}}</b><td>
+                                </tr>
+                                <tr>
+                                    <td>维护商:</td>
+                                    <td><b>{{ idc.operator }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>介入带宽:</td>
+                                    <td><b>{{ idc.bandwidth }}</b></td>
+                                </tr>
+                                <tr>
+                                    <td>备注:</td>
+                                    <td><b>{{ idc.comment }}</b></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
