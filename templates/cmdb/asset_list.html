@@ -82,8 +82,8 @@ $(document).ready(function () {
                 }
             }},
             {targets: 8, createdCell: function (td, cellData, rowData) {
-{#                var update_btn = '<a href="{% url "api-cmdb:idc-detail" pk=999999 %}" class="btn btn-xs btn-info">更新</a>'.replace("999999", cellData);#}
-                var update_btn = '<a href="#" class="btn btn-xs btn-info">更新</a>'.replace("999999", cellData);
+                var update_btn = '<a href="{% url "cmdb:asset-update" pk=999999 %}" class="btn btn-xs btn-info">更新</a>'.replace("999999", cellData);
+{#                var update_btn = '<a href="#" class="btn btn-xs btn-info">更新</a>'.replace("999999", cellData);#}
                 var del_btn = '<a class="btn btn-xs btn-danger m-l-xs btn_asset_delete" data-uid="999999">删除</a>'.replace('999999', cellData);
                 $(td).html(update_btn+del_btn)
             }}

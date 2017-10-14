@@ -23,7 +23,7 @@ from django.urls import reverse_lazy
 import json
 
 
-class AssetListView(AdminUserRequiredMixin, TemplateView):
+class ServerAssetListView(AdminUserRequiredMixin, TemplateView):
     template_name = "cmdb/asset_list.html"
 
     def get_context_data(self, **kwargs):
@@ -32,20 +32,20 @@ class AssetListView(AdminUserRequiredMixin, TemplateView):
             "action": "资产信息",
         }
         kwargs.update(context)
-        return super(AssetListView, self).get_context_data(**kwargs)
+        return super(ServerAssetListView, self).get_context_data(**kwargs)
 
 
-class AssetCreateView(AdminUserRequiredMixin, CreateView):
+class ServerAssetCreateView(AdminUserRequiredMixin, CreateView):
     model = ServerAsset
-    form_class = forms.AssetCreateForm
-    template_name = "cmdb/asset_create.html"
+    form_class = forms.ServerAssetCreateForm
+    template_name = "cmdb/asset_create_update.html"
     success_url = reverse_lazy("cmdb:asset-list")
 
     def form_valid(self, form):
         self.asset = asset = form.save()
         asset.create_by = self.request.user.username or "Admin"
         asset.save()
-        return super(AssetCreateView, self).form_valid(form)
+        return super(ServerAssetCreateView, self).form_valid(form)
 
     def get_context_data(self, **kwargs):
         context = {
@@ -53,10 +53,32 @@ class AssetCreateView(AdminUserRequiredMixin, CreateView):
             "action": "创建资产",
         }
         kwargs.update(context)
-        return super(AssetCreateView, self).get_context_data(**kwargs)
+        return super(ServerAssetCreateView, self).get_context_data(**kwargs)
 
 
-class AssetDetailView(DeleteView):
+class ServerAssetUpdateView(AdminUserRequiredMixin, UpdateView):
+    model = ServerAsset
+    form_class = forms.ServerAssetUpdateForm
+    template_name = "cmdb/asset_create_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = {
+            "app": "资产管理",
+            "action": "资产信息更新",
+        }
+        kwargs.update(context)
+        return super(ServerAssetUpdateView, self).get_context_data(**kwargs)
+
+    def form_invalid(self, form):
+        print(form.errors)
+        return super(ServerAssetUpdateView, self).form_invalid(form)
+
+    def get_success_url(self):
+        success_url = reverse_lazy("cmdb:asset-detail", kwargs={"pk": self.object.pk})
+        return success_url
+
+
+class ServerAssetDetailView(DeleteView):
     model = ServerAsset
     context_object_name = "asset"
     template_name = "cmdb/asset_detail.html"
@@ -73,7 +95,7 @@ class AssetDetailView(DeleteView):
             "mounts": mounts,
         }
         kwargs.update(context)
-        return super(AssetDetailView, self).get_context_data(**kwargs)
+        return super(ServerAssetDetailView, self).get_context_data(**kwargs)
 
     def get_networks(self):
         if self.object.networks is None:

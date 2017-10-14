@@ -27,9 +27,9 @@ router.register(r"v1/asset", api.ServerAssetSet, "asset")
 urlpatterns = [
     url(r"^v1/asset/(?P<pk>\d+)/refresh/$", api.ServerAssetRefreshView.as_view(), name="asset-refresh"),
 
-    url(r"^/v1/idc/(?P<pk>\d+)/asset/$", api.IDCUpdateAssetApi.as_view(), name="idc-update-asset"),
+    url(r"^v1/idc/(?P<pk>\d+)/asset/$", api.IDCUpdateAssetApi.as_view(), name="idc-update-asset"),
 
-    url(r"^/v1/asset-user/(?P<pk>\d+)/asset/$", api.AssetUserUpdateAssetApi.as_view(), name="asset-user-update-asset"),
+    url(r"^v1/asset-user/(?P<pk>\d+)/asset/$", api.AssetUserUpdateAssetApi.as_view(), name="asset-user-update-asset"),
 ]
 
 urlpatterns += router.urls

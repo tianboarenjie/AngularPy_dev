@@ -13,7 +13,7 @@
 """
 
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView
+from django.views.generic import TemplateView, UpdateView, DetailView
 from django.views.generic.edit import CreateView
 
 from users.utils import AdminUserRequiredMixin
@@ -53,6 +53,30 @@ class IDCCreateView(AdminUserRequiredMixin, CreateView):
         idc.create_by = self.request.user.username or "System"
         idc.save()
         return super(IDCCreateView, self).form_valid(form)
+
+
+class IDCUpdateView(AdminUserRequiredMixin, UpdateView):
+    model = IDC
+    form_class = IDCForm
+    template_name = "cmdb/idc_create_update.html"
+    context_object_name = "idc"
+
+    def form_valid(self, form):
+        idc = form.save(commit=False)
+        idc.save()
+        return super(IDCUpdateView, self).form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = {
+            "app": "资产管理",
+            "action": "IDC信息更新"
+        }
+        kwargs.update(context)
+        return super(IDCUpdateView, self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        success_url = reverse_lazy("cmdb:idc-detail", kwargs={"pk": self.object.pk})
+        return success_url
 
 
 class IDCDetailView(AdminUserRequiredMixin, DetailView):

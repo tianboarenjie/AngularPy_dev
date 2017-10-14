@@ -40,8 +40,8 @@ $(document).ready(function () {
                 $(td).html("<a href='javascript:void(0);' data-toggle='tooltip' title='"+cellData+"'>" + innerHtml + "</a>");
             }},
             {targets: 5, createdCell: function (td, cellData, rowData) {
-{#                var update_btn = "<a href='{% url 'cmdb:asset-usr-update' pk=999999 %}' class='btn btn-xs x-l-xs btn-info'>更新</a>".replace("999999", cellData);#}
-                var update_btn = "<a href='#' class='btn btn-xs x-l-xs btn-info'>更新</a>";
+                var update_btn = "<a href='{% url 'cmdb:asset-user-update' pk=999999 %}' class='btn btn-xs x-l-xs btn-info'>更新</a>".replace("999999", cellData);
+{#                var update_btn = "<a href='#' class='btn btn-xs x-l-xs btn-info'>更新</a>";#}
                 var delete_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_asset_user_delete' data-uid='999999'>删除</a>".replace("999999", cellData);
                 $(td).html(update_btn + delete_btn);
             }}
@@ -59,7 +59,7 @@ $(document).ready(function () {
     var name = $(this).closest("tr").find(":nth-child(2)").children("a").html();
     var uid = $this.data("uid");
 {#    var the_url = "{% url 'api-cmdb:asset-user-detail' pk=999999 %}".replace("999999", uid);#}
-    var the_url = "#".replace("999999", uid);
+    var the_url = "{% url 'cmdb:asset-user-detail' pk=999999 %}".replace("999999", uid);
     objectDelete($this, name, the_url);
     setTimeout(function () {
         $data_table.ajax.reload();

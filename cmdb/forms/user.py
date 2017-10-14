@@ -30,5 +30,5 @@ class AssetUserForm(forms.ModelForm):
             "comment": forms.Textarea(attrs={"placeholder": u"备注"}),
         }
         help_texts = {
-            "username": "* required",
+            "username": "* 必须",
         }

@@ -38,7 +38,7 @@ $(document).ready(function () {
                 $(td).html("<a href='javascript:void(0);' data-toggle='tooltip' title='"+cellData+"'>" + innerHtml + "</a>");
             }},
             {targets: 7, createdCell: function (td, cellData, rowData) {
-                var update_btn = "<a href='#' class='btn btn-xs btn-info'>更新</a>".replace("999999", cellData);
+                var update_btn = "<a href='{% url 'cmdb:idc-update' pk=999999 %}' class='btn btn-xs btn-info'>更新</a>".replace("999999", cellData);
                 var del_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_idc_delete' data-uid='999999'>删除</a>".replace("999999", cellData);
                 $(td).html(update_btn + del_btn)
             }}

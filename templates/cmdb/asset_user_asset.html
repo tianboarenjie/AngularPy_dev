@@ -96,7 +96,7 @@
 
 {% block custom_foot_js %}
 <script>
-
+angularpy.assets_selected = {};
 Array.prototype.remove = function (val) {
     var index = this.indexOf(val);
     if (index > -1) {
@@ -136,9 +136,12 @@ function updateAssetUserAsset(assets) {
     });
 }
 
-function objectRemove(obj, name, url, data) {
+function assetRemove(obj, name, url, data) {
     function doRemove() {
-        var body = data;
+        var body = {
+            cert_assets: data
+        };
+{#        alert(body["cert_assets"]);#}
         var success = function () {
             swal("移除！", name+"已经被移除", "success");
             $(obj).parent().parent().remove();
@@ -168,8 +171,6 @@ function objectRemove(obj, name, url, data) {
     });
 }
 
-angularpy.assets_selected = {};
-
 $(document).ready(function () {
     $(".select2").select2().on("select2:select", function (evt) {
         var data = evt.params.data;
@@ -178,7 +179,6 @@ $(document).ready(function () {
         var data = evt.params.data;
         delete angularpy.assets_selected[data.id];
     });
-
     var options = {
         ele: $("#asset_user_asset_table"),
         buttons: [],
@@ -204,10 +204,10 @@ $(document).ready(function () {
                 }
             }},
             {targets: 5, createdCell: function (td, cellData, rowData) {
-                var update_btn = "<a href='#' class='btn btn-xs btn-info'>更新</a>";
-{#                var update_btn = "<<a href='{% url 'cmdb:asset-update' pk=999999 %}' class='btn btn-xs btn-info'>更新</a>".replace("999999", rowData.id);#}
+{#                var update_btn = "<a href='#' class='btn btn-xs btn-info'>更新</a>";#}
+                var update_btn = "<a href='{% url 'cmdb:asset-update' pk=999999 %}' class='btn btn-xs btn-info'>更新</a>".replace("999999", rowData.id);
 {#                var del_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_asset_remove' data-aid='999999'>移除</a>".replace("999999", rowData.id);#}
-{#                $(td).html(update_btn + del_btn)#}
+{#                $(td).html(update_btn + del_btn);#}
                 $(td).html(update_btn)
             }}
         ],
@@ -227,27 +227,23 @@ $(document).ready(function () {
     });
     assets.unique();
     updateAssetUserAsset(assets);
-});
+})
 
-{#.on("click", ".btn_asset_remove", function () {#}
-{#    var $this = $(this);#}
-{#    var the_url = "{% url 'api-cmdb:asset-user-update-asset' pk=asset_user.id %}";#}
-{#    var assets = [];#}
-{#    var delete_asset_id = $(this).data("aid");#}
-{#    $.ajax({#}
-{#        url: the_url,#}
-{#        method:"GET",#}
-{#        dataType: "json",#}
-{#        success: function (result) {#}
-{#            for (var i=0; i<result["cert_assets"].length; i++) {#}
-{#                assets.push(result["cert_assets"][i])#}
-{#            }#}
-{#            assets.remove(delete_asset_id);#}
-{#            var data = {"assets": assets};#}
-{#            objectRemove($this, name, the_url, data);#}
-{#        }#}
-{#    })#}
-{#{)#}
+.on("click", ".btn_asset_remove", function () {
+    var $this = $(this);
+    var the_url = "{% url 'api-cmdb:asset-user-update-asset' pk=asset_user.id %}";
+    var name=$(this).closest("tr").find(":nth-child(1) > a").html();
+    var $data_table = $("#asset_user_asset_table").DataTable();
+    var assets = [];
+    $("#asset_user_asset_table > tbody > tr").map(function () {
+        assets.push(parseInt($(this).closest("tr").find(":nth-child(1) > a").attr("data-aid")))
+    });
+    var delete_asset_id = $(this).data("aid");
+    assets.remove(delete_asset_id);
+    assets.unique();
+    assetRemove($this, name, the_url, assets);
+    $data_table.ajax.reload();
+});
 
 </script>
 

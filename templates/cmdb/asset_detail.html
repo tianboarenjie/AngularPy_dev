@@ -14,7 +14,7 @@
                         </li>
 
                         <li class="pull-right">
-                            <a class="btn btn-outline btn-default" id="btn-update-asset"><i class="fa fa-edit"></i>更新 </a>
+                            <a href="{% url 'cmdb:asset-update' pk=asset.id %}" class="btn btn-outline btn-default" id="btn-update-asset"><i class="fa fa-edit"></i>更新 </a>
                         </li>
 
                         <li class="pull-right">

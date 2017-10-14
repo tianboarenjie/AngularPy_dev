@@ -54,6 +54,7 @@
                                         <th>端口</th>
                                         <th>类型</th>
                                         <th>可用</th>
+                                        <th>动作</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -163,11 +164,15 @@ $(document).ready(function () {
                 } else {
                     $(td).html("<i class='fa fa-check text-navy'></i>")
                 }
+            }},
+             {targets: 6, createdCell: function (td, cellData, rowData) {
+                var update_btn = "<a href='{% url 'cmdb:asset-update' pk=999999 %}' class='btn btn-xs btn-info'>更新</a>".replace("999999", rowData.id);
+                $(td).html(update_btn)
             }}
         ],
         ajax_url: "{% url 'api-cmdb:asset-list' %}?idc_id={{ idc.id }}",
         columns: [{data:function () {return ""}}, {data: "hostname"}, {data: "ip"},
-            {data: "port"}, {data: "type"}, {data: "status"}]
+            {data: "port"}, {data: "type"}, {data: "status"}, {data: "id"}]
     };
     angularpy.initDataTable(options);
 })

@@ -12,7 +12,7 @@
 @Time: 9/27/17 11:19 PM
 """
 from django.views.generic import TemplateView, DetailView, ListView
-from django.views.generic.edit import CreateView, SingleObjectMixin
+from django.views.generic.edit import CreateView, SingleObjectMixin, UpdateView
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 
@@ -36,7 +36,7 @@ class AssetUserListView(AdminUserRequiredMixin, TemplateView):
 class AssetUserCreateView(AdminUserRequiredMixin, CreateView):
     model = AssetUser
     form_class = forms.AssetUserForm
-    template_name = "cmdb/asset_user_create.html"
+    template_name = "cmdb/asset_user_create_update.html"
     success_url = reverse_lazy("cmdb:asset-user-list")
 
     def get_context_data(self, **kwargs):
@@ -52,6 +52,24 @@ class AssetUserCreateView(AdminUserRequiredMixin, CreateView):
         assetuser.create_by = self.request.user.username or "System"
         assetuser.save()
         return super(AssetUserCreateView, self).form_valid(form)
+
+
+class AssetUserUpdateView(AdminUserRequiredMixin, UpdateView):
+    model = AssetUser
+    form_class = forms.AssetUserForm
+    template_name = "cmdb/asset_user_create_update.html"
+
+    def get_context_data(self, **kwargs):
+        context = {
+            "app": "资产管理",
+            "action": "终端用户信息更新"
+        }
+        kwargs.update(context)
+        return super(AssetUserUpdateView, self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        success_url = reverse_lazy("cmdb:asset-user-detail", kwargs={"pk": self.object.pk})
+        return success_url
 
 
 class AssetUserDetailView(AdminUserRequiredMixin, SingleObjectMixin, ListView):

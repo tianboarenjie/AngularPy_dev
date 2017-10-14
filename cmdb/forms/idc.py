@@ -55,5 +55,5 @@ class IDCForm(forms.ModelForm):
             )
         }
         help_texts = {
-            "name": "* required"
+            "name": "* 必须"
         }
