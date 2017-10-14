@@ -44,6 +44,12 @@ class AssetUserSet(IDInfilterMixin, BulkModelViewSet):
     permission_classes = (IsSuperUser,)
 
 
+class AssetUserUpdateAssetApi(generics.RetrieveUpdateAPIView):
+    queryset = AssetUser.objects.all()
+    serializer_class = serializers.AssetUserUpdateAssetSerializer
+    permission_classes = (IsSuperUser,)
+
+
 class ServerAssetSet(IDInfilterMixin, BulkModelViewSet):
     queryset = ServerAsset.objects.all()
     serializer_class = serializers.ServerAssetSerializer

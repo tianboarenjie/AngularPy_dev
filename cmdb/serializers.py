@@ -43,9 +43,9 @@ class AssetUserSerializer(serializers.ModelSerializer):
             return json.dumps(obj.cert_assets.name)
         else:
             tmp = obj.cert_assets.get_queryset().values("hostname")
-            result = " "
+            result = ""
             for host in tmp:
-                result += host["hostname"]
+                result += " " + host["hostname"]
             return result
 
     def get_field_names(self, declared_fields, info):
@@ -53,6 +53,14 @@ class AssetUserSerializer(serializers.ModelSerializer):
         fields.append("assets_amount")
         fields.append("assets_list")
         return fields
+
+
+class AssetUserUpdateAssetSerializer(serializers.ModelSerializer):
+    cert_assets = serializers.PrimaryKeyRelatedField(many=True, queryset=ServerAsset.objects.all())
+
+    class Meta:
+        model = AssetUser
+        fields = ["id", "cert_assets"]
 
 
 class IDCSerializer(BulkSerializerMixin, serializers.ModelSerializer):

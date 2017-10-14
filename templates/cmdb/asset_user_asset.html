@@ -115,6 +115,27 @@ Array.prototype.unique = function () {
     return res;
 };
 
+function updateAssetUserAsset(assets) {
+    var the_url = "{% url 'api-cmdb:asset-user-update-asset' pk=asset_user.id %}";
+    var body = {
+        cert_assets: Object.assign([], assets)
+    };
+    var $data_table = $("#asset_user_asset_table").DataTable();
+    var success = function (data) {
+        $(".select2-selection__rendered").empty();
+        $.map(angularpy.assets_selected, function (asset_ip, index) {
+            $("#opt_" + index).remove();
+            $data_table.ajax.reload();
+        });
+    };
+    APIUpdateAttr({
+        url: the_url,
+        body: JSON.stringify(body),
+        method: "PATCH",
+        success: success
+    });
+}
+
 function objectRemove(obj, name, url, data) {
     function doRemove() {
         var body = data;
@@ -185,8 +206,9 @@ $(document).ready(function () {
             {targets: 5, createdCell: function (td, cellData, rowData) {
                 var update_btn = "<a href='#' class='btn btn-xs btn-info'>更新</a>";
 {#                var update_btn = "<<a href='{% url 'cmdb:asset-update' pk=999999 %}' class='btn btn-xs btn-info'>更新</a>".replace("999999", rowData.id);#}
-                var del_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_asset_remove' data-aid='999999'>移除</a>".replace("999999", rowData.id);
-                $(td).html(update_btn + del_btn)
+{#                var del_btn = "<a class='btn btn-xs btn-danger m-l-xs btn_asset_remove' data-aid='999999'>移除</a>".replace("999999", rowData.id);#}
+{#                $(td).html(update_btn + del_btn)#}
+                $(td).html(update_btn)
             }}
         ],
         ajax_url: "{% url 'api-cmdb:asset-list' %}?asset_user_id={{ asset_user.id }}",
@@ -199,45 +221,33 @@ $(document).ready(function () {
     if (Object.keys(angularpy.assets_selected).length === 0) {
         return false;
     }
-    var $data_table = $(".asset_user_asset_table").DataTable();
     var assets = [];
     $.map(angularpy.assets_selected, function (value, index) {
         assets.push(parseInt(index));
     });
     assets.unique();
-    var data = [];
-    var asset_user_id = {{ asset_user.id }};
-    var the_url = "{% url 'api-cmdb:asset-list' %}";
-    for (var i=0; i<assets.length; i++) {
-        data.push({"id": assets[i], "asset_user": asset_user_id})
-    }
-    APIUpdateAttr({
-        url: the_url,
-        body: JSON.stringify(data),
-        method: "PATCH"
-    });
-    $data_table.ajax.reload();
-})
+    updateAssetUserAsset(assets);
+});
 
-.on("click", ".btn_asset_remove", function () {
-    var $this = $(this);
-    var the_url = "{% url 'api-cmdb:asset-user-detail' pk=asset_user.id %}";
-    var assets = [];
-    var delete_asset_id = $(this).data("aid");
-    $.ajax({
-        url: the_url,
-        method:"GET",
-        dataType: "json",
-        success: function (result) {
-            for (var i=0; i<result["cert_assets"].length; i++) {
-                assets.push(result["cert_assets"][i])
-            }
-            assets.remove(delete_asset_id);
-            var data = {"assets": assets};
-            objectRemove($this, name, the_url, data);
-        }
-    })
-})
+{#.on("click", ".btn_asset_remove", function () {#}
+{#    var $this = $(this);#}
+{#    var the_url = "{% url 'api-cmdb:asset-user-update-asset' pk=asset_user.id %}";#}
+{#    var assets = [];#}
+{#    var delete_asset_id = $(this).data("aid");#}
+{#    $.ajax({#}
+{#        url: the_url,#}
+{#        method:"GET",#}
+{#        dataType: "json",#}
+{#        success: function (result) {#}
+{#            for (var i=0; i<result["cert_assets"].length; i++) {#}
+{#                assets.push(result["cert_assets"][i])#}
+{#            }#}
+{#            assets.remove(delete_asset_id);#}
+{#            var data = {"assets": assets};#}
+{#            objectRemove($this, name, the_url, data);#}
+{#        }#}
+{#    })#}
+{#{)#}
 
 </script>
 

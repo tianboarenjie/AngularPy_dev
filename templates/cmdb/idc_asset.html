@@ -126,7 +126,7 @@ function updateIDCAsset(asset) {
     APIUpdateAttr({
         url: the_url,
         body: JSON.stringify(body),
-        method: "PUT",
+        method: "PATCH",
         success: success
     });
 }
@@ -172,29 +172,39 @@ $(document).ready(function () {
     angularpy.initDataTable(options);
 })
 
+{#.on("click", ".btn-asset-attach", function () {#}
+{#    if (Object.keys(angularpy.assets_selected).length === 0) {#}
+{#        return false;#}
+{#    }#}
+{#    var asset = [];#}
+{#    var $data_table = $("#idc_asset_table").DataTable();#}
+{#    $.ajax({#}
+{#        url: "{% url 'api-cmdb:asset-list' %}",#}
+{#        method: "GET",#}
+{#        data: {"idc_id": {{ idc.id }}},#}
+{#        dataType: "json",#}
+{#        success: function (result) {#}
+{#            for (var i in result) {#}
+{#                if (!isNaN(parseInt(result[i]["id"]))) {#}
+{#                    asset.push(parseInt(result[i]["id"]))#}
+{#                }#}
+{#            }#}
+{#            $.map(angularpy.assets_selected, function (value, index) {#}
+{#                asset.push(parseInt(index));#}
+{#            });#}
+{#            updateIDCAsset(asset);#}
+{#        }#}
+{#    });#}
+//)
 .on("click", ".btn-asset-attach", function () {
     if (Object.keys(angularpy.assets_selected).length === 0) {
         return false;
     }
     var asset = [];
-    var $data_table = $("#idc_asset_table").DataTable();
-    $.ajax({
-        url: "{% url 'api-cmdb:asset-list' %}",
-        method: "GET",
-        data: {"idc_id": {{ idc.id }}},
-        dataType: "json",
-        success: function (result) {
-            for (var i in result) {
-                if (!isNaN(parseInt(result[i]["id"]))) {
-                    asset.push(parseInt(result[i]["id"]))
-                }
-            }
-            $.map(angularpy.assets_selected, function (value, index) {
-                asset.push(parseInt(index));
-            });
-            updateIDCAsset(asset);
-        }
+    $.map(angularpy.assets_selected, function (value, index) {
+        asset.push(parseInt(index));
     });
+    updateIDCAsset(asset);
 })
 </script>
 
