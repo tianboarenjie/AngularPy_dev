@@ -85,4 +85,4 @@ class ServerAssetRefreshView(generics.RetrieveAPIView):
         if len(result) == 0:
             return super(ServerAssetRefreshView, self).retrieve(result, *args, **kwargs)
         else:
-            return Response(result, status=505)
+            return Response(result, status=408)

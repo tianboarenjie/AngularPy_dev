@@ -118,10 +118,10 @@
                                         <td>资产状态：</td>
                                         <td><b>{{ asset.status }}</b></td>
                                     </tr>
-                                    <tr>
-                                        <td>激活：</td>
-                                        <td><b>{{ asset.is_active }}</b></td>
-                                    </tr>
+{#                                    <tr>#}
+{#                                        <td>激活：</td>#}
+{#                                        <td><b>{{ asset.is_active }}</b></td>#}
+{#                                    </tr>#}
                                     <tr>
                                         <td>资产类型：</td>
                                         <td><b>{{ asset.type }}</b></td>
@@ -261,16 +261,20 @@ function refreshAssetHardware() {
     var success = function (data) {
         swal({
            title: "刷新成功",
-           text: "更新资产" + "{{ asset.hostname }}" + "成功",
+           text: "刷新资产" + "{{ asset.hostname }}" + "成功",
            type:"success"
         }, function () {
             location.reload()
         });
     };
+    var fail = function (data) {
+        swal("{{ asset.hostname }}" + "刷新失败！", "{{ asset.hostname }}：" + data + "\n可能终端凭证或是端口有误，并确认网络连通性后再尝试！", "error");
+    };
     APIUpdateAttr({
         url: the_url,
+        method: "GET",
         success: success,
-        method: "GET"
+        error: fail
     });
 }
 
