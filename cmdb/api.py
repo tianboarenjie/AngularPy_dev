@@ -85,4 +85,5 @@ class ServerAssetRefreshView(generics.RetrieveAPIView):
         if len(result) == 0:
             return super(ServerAssetRefreshView, self).retrieve(result, *args, **kwargs)
         else:
-            return Response(result, status=408)
+            print(result.get(temp.hostname).get("result").get("msg"))
+            return Response(status=408)
